@@ -1,0 +1,7 @@
+PORT=XXXX
+URL=http://YOUR_URL
+FE_PORT=XXXX
+
+DB_URL=mongodb+srv://USERNAME:PASSWORD@cluster0.CLUSTER_NAME.mongodb.net/DB_NAME?retryWrites=true&w=majority
+
+JWT_SECRET=YOUR_JWT_SECRET
