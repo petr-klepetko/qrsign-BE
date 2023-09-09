@@ -11,12 +11,6 @@ const Signature = require("../models/signature");
 /**
  * Functions
  */
-
-const generateKeyPair = async (req, res) => {
-  const keyPair = await generateKeyPem();
-  res.send(keyPair);
-};
-
 const getUser = async (id) => {
   try {
     const user = await User.findById(id);
@@ -30,23 +24,21 @@ const getUser = async (id) => {
 
 const getKeysFromUser = async (id) => {
   const user = await getUser(id);
-
+  
   if (user?.err) {
     return {
       message: "error while getting the user",
       err: { ...user },
     };
   }
-
+  
   return user?.keys;
 };
 
 const createSignature = async (privateKeyPem, message) => {
-  // console.log("privateKeyPem: ", privateKeyPem);
   console.log("message: ", message);
   try {
     const privateKey = await importPrivateKey(privateKeyPem);
-    // console.log(privateKey);
     signature = await signMessageB64(privateKey, message);
     return signature;
   } catch (err) {
@@ -54,6 +46,10 @@ const createSignature = async (privateKeyPem, message) => {
     return { err };
   }
 };
+
+
+/** Request handlers */
+
 
 const signMessage = async (req, res) => {
   if (typeof req.body.message === "undefined") {
@@ -157,6 +153,11 @@ const reSignMessage = async (req, res) => {
   } catch (err) {
     res.status(400).send({ message: "DB operation failed", err });
   }
+};
+
+const generateKeyPair = async (req, res) => {
+  const keyPair = await generateKeyPem();
+  res.send(keyPair);
 };
 
 module.exports = {
