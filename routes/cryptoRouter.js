@@ -1,6 +1,6 @@
 /** Imports */
 const express = require("express");
-const { authMiddleWare } = require("../controllers/auth");
+const { authMiddleWare } = require("../controllers/authController");
 const {
   createSignature,
   getSignatureByUUID,
@@ -23,15 +23,21 @@ router.use(authMiddleWare);
  *  Relative to "/crypto...""
  */
 
-router.get("/generate-key-pair", generateKeyPair);
-
 router.post("/sign-message", signMessage);
 
 router.post("/sign-message/:uuid", reSignMessage);
 
 router.get("/signature/:id", getSignatureByUUID);
 
+/*
+ * Not necessary, testing
+ */
+
+/* Create signature in db, signature is given in ob*/
 router.post("/signature", createSignature);
+
+/** Generate Key pair */
+router.get("/generate-key-pair", generateKeyPair);
 
 /** Exports */
 module.exports = router;

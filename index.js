@@ -3,7 +3,7 @@
  */
 /** Utils */
 const express = require("express");
-const { authMiddleWare } = require("./controllers/auth");
+const { authMiddleWare } = require("./controllers/authController");
 const { logReqest } = require("./controllers/utils");
 const middleware = require("./routes/middleware");
 const cors = require("cors");
