@@ -276,10 +276,17 @@ const getUserInfoFromCookie = (req, res) => {
     res.status(400).send(error);
   }
 };
+
+const logRequest = async (req, res, next) => {
+  console.log("req.url: ", req.url);
+  next();
+};
+
 module.exports = {
   register,
   login,
   logout,
   getUserInfoFromCookie,
   authMiddleWare,
+  logRequest,
 };

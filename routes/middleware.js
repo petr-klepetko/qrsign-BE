@@ -1,7 +1,6 @@
 /** Imports */
 const express = require("express");
-const { authMiddleWare } = require("../controllers/authController");
-const { logReqest } = require("../controllers/utils");
+const { authMiddleWare, logRequest } = require("../controllers/authController");
 
 /************************************************************************ */
 
@@ -18,7 +17,7 @@ middleware.use(express.json());
 middleware.use(authMiddleWare);
 
 /** Log the request to the console */
-middleware.use(logReqest);
+middleware.use(logRequest);
 
 /** Exports */
 module.exports = middleware;
