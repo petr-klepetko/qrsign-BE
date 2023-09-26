@@ -181,17 +181,32 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   res.cookie("accessToken", "", { maxAge: 0 });
+  res.cookie("refreshToken", "", { maxAge: 0 });
   res.send({ message: "success" });
 };
 
 const getUserInfoFromCookie = (req, res) => {
+  let = accessTokenCookie = false;
   try {
-    const accessTokenCookie = req.cookies.accessToken;
+    accessTokenCookie = req.cookies.accessToken;
+  } catch (error) {
+    console.log("Couldn't get the access token cookie.");
+  }
 
+  if (!accessTokenCookie) {
+    res.send({
+      anonymous: true,
+    });
+    return;
+  }
+
+  try {
     const claims = jwt.verify(accessTokenCookie, process.env.JWT_SECRET);
     const { _id, iat, publicKey, ...data } = claims;
+    data.anonymous = false;
     res.send(data);
   } catch (error) {
+    console.log("Error while getting the user info");
     res.status(400).send(error);
   }
 };
