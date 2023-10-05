@@ -24,19 +24,19 @@ const getUser = async (id) => {
 
 const getKeysFromUser = async (id) => {
   const user = await getUser(id);
-  
+
   if (user?.err) {
     return {
       message: "error while getting the user",
       err: { ...user },
     };
   }
-  
+
   return user?.keys;
 };
 
 const createSignature = async (privateKeyPem, message) => {
-  console.log("message: ", message);
+  // console.log("message: ", message);
   try {
     const privateKey = await importPrivateKey(privateKeyPem);
     signature = await signMessageB64(privateKey, message);
@@ -47,9 +47,7 @@ const createSignature = async (privateKeyPem, message) => {
   }
 };
 
-
 /** Request handlers */
-
 
 const signMessage = async (req, res) => {
   if (typeof req.body.message === "undefined") {
@@ -74,7 +72,13 @@ const signMessage = async (req, res) => {
     return;
   }
 
-  const signature = await createSignature(keys[0].private, req.body.message);
+  let signature;
+  try {
+    signature = await createSignature(keys[0].private, req.body.message);
+  } catch (error) {
+    res.status(400).send({ ...keys });
+    return;
+  }
 
   if (typeof signature.err !== "undefined") {
     res.status(500).send({
@@ -108,7 +112,7 @@ const reSignMessage = async (req, res) => {
     return;
   }
 
-  console.log("req.params: ", req.params);
+  // console.log("req.params: ", req.params);
 
   if (typeof req.params.uuid === "undefined") {
     res.status(400).send({

@@ -20,10 +20,11 @@ const authMiddleWare = async (req, res, next) => {
 
       const session = await Session.findOne({ uuid: claims.sessionID });
 
-      const treshold = 1000 * 60 * 5;
+      const treshold = 1000 * 60 * process.env.REFRESH_TOKEN_TIME;
 
       const isValid = Date.now() - Date.parse(session.createdAt) <= treshold;
-      console.log("session isValid: ", isValid);
+
+      console.log("Refresh token is valid: ", isValid);
 
       if (isValid) {
         const { _id, email, name, uuid, publicKey, ...userInfo } = claims;
@@ -35,13 +36,13 @@ const authMiddleWare = async (req, res, next) => {
           httpOnly: true,
           sameSite: "None",
           secure: true,
-          maxAge: 1000 * 60,
+          maxAge: 1000 * 60 * process.env.ACCESS_TOKEN_TIME,
         });
       } else {
         claims = null;
       }
     } catch (error) {
-      // console.log("error: ", error);
+      console.log("error: ", error);
 
       console.log("error while parsing cookie, continuing as anonymous");
 
@@ -67,12 +68,13 @@ const authMiddleWare = async (req, res, next) => {
   try {
     req.user = await User.findOne({ uuid: claims.uuid });
     req.user.anonymous = false;
+    // console.log(JSON.stringify("req.user: ", req.user));
   } catch (err) {
     console.log("User from cookie not found");
     next();
   }
 
-  console.log(`Successfully authenticated as user ${req.user.email}`);
+  // console.log(`Successfully authenticated as user ${req.user.email}`);
   // console.log("req.user: ", req.user);
   next();
 };
@@ -158,8 +160,8 @@ const login = async (req, res) => {
 
   const refreshToken = jwt.sign(refreshTokenPayload, process.env.JWT_SECRET);
 
-  console.log("refreshTokenPayload: ", refreshTokenPayload);
-  console.log("refreshToken: ", refreshToken);
+  // console.log("refreshTokenPayload: ", refreshTokenPayload);
+  // console.log("refreshToken: ", refreshToken);
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
