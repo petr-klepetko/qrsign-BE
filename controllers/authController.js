@@ -42,7 +42,7 @@ const authMiddleWare = async (req, res, next) => {
         claims = null;
       }
     } catch (error) {
-      console.log("error: ", error);
+      // console.log("error: ", error);
 
       console.log("error while parsing cookie, continuing as anonymous");
 
@@ -109,17 +109,17 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   let user;
-
+  console.log("Line 112");
   if (typeof req.body.email === "undefined") {
     res.status(404).send({ message: "No email found" });
     return;
   }
-
+  console.log("Line 117");
   if (typeof req.body.password === "undefined") {
     res.status(404).send({ message: "No password found" });
     return;
   }
-
+  console.log("Line 122");
   try {
     user = await User.findOne({ email: req.body.email });
     if (typeof user.name === "undefined") {
@@ -130,7 +130,7 @@ const login = async (req, res) => {
     res.status(404).send({ message: "User was not found", err });
     return;
   }
-
+  console.log("Line 133");
   const correctPassword = await bcrypt.compare(
     req.body.password,
     user.password
@@ -147,7 +147,7 @@ const login = async (req, res) => {
     { _id: user._id, email, name, uuid, publicKey: keys[0].public },
     process.env.JWT_SECRET
   );
-
+  console.log("Line 150");
   const session = await Session.create({ email, uuid: uuidv4() });
 
   const refreshTokenPayload = {
@@ -162,7 +162,7 @@ const login = async (req, res) => {
 
   // console.log("refreshTokenPayload: ", refreshTokenPayload);
   // console.log("refreshToken: ", refreshToken);
-
+  console.log("Line 165");
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     sameSite: "None",
