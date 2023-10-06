@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: `${process.env.FE_URL}:${process.env.FE_PORT}`,
+    origin: `${process.env.FE_URL}${process.env.FE_PORT}`,
   })
 );
 app.listen(PORT, onListenStart);
