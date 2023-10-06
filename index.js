@@ -37,7 +37,7 @@ app.use(
     origin: `${process.env.FE_URL}${process.env.FE_PORT}`,
   })
 );
-app.listen(PORT, onListenStart);
+app.listen(PORT.substring(1), onListenStart);
 
 /**
  * Middleware before the routes
