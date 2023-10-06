@@ -25,7 +25,7 @@ const URL = process.env.URL;
 const app = express();
 
 const onListenStart = () => {
-  console.log(`Listening on ${URL}:${PORT}`);
+  console.log(`Listening on ${URL}${PORT}`);
   dbInit();
 };
 
@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: `${process.env.URL}:${process.env.FE_PORT}`,
+    origin: `${process.env.FE_URL}:${process.env.FE_PORT}`,
   })
 );
 app.listen(PORT, onListenStart);
