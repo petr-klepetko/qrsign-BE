@@ -1,7 +1,11 @@
-PORT=XXXX
-URL=http://YOUR_URL
-FE_PORT=XXXX
+URL=http://127.0.0.1
+PORT=:8079
 
-DB_URL=mongodb+srv://USERNAME:PASSWORD@cluster0.CLUSTER_NAME.mongodb.net/DB_NAME?retryWrites=true&w=majority
+FE_URL=http://127.0.0.1
+FE_PORT=:5173
 
-JWT_SECRET=YOUR_JWT_SECRET
+DB_URL=mongodb+srv://username:password@my_url.mongodb.net/db_name?retryWrites=true&w=majority
+
+JWT_SECRET=XXXXXXXXXXXX
+ACCESS_TOKEN_TIME=5
+REFRESH_TOKEN_TIME=15

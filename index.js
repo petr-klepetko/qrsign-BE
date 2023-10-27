@@ -37,6 +37,7 @@ app.use(
     origin: `${process.env.FE_URL}${process.env.FE_PORT}`,
   })
 );
+
 app.listen(PORT.substring(1), onListenStart);
 
 /**
